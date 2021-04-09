@@ -77,3 +77,23 @@ export const useClick = (onClick) => {
   }, []);
   return element;
 };
+
+export const useConfirm = (message, onConfirm, onCancel) => {
+  if (!onConfirm || typeof onConfirm !== 'function') {
+    return;
+  }
+
+  if (onCancel && typeof onCancel !== 'funciton') {
+    return;
+  }
+
+  const confirmAction = () => {
+    if (confirm(message)) {
+      onConfirm();
+    } else {
+      onCancel();
+    }
+  };
+
+  return confirmAction;
+};
