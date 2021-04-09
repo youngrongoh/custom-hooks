@@ -79,7 +79,7 @@ export const useClick = (onClick) => {
 };
 
 export const useConfirm = (message, onConfirm, onCancel) => {
-  if (!onConfirm || typeof onConfirm !== 'function') {
+  if (typeof onConfirm !== 'function') {
     return;
   }
 
@@ -91,9 +91,21 @@ export const useConfirm = (message, onConfirm, onCancel) => {
     if (confirm(message)) {
       onConfirm();
     } else {
-      onCancel();
+      onCancel && onCancel();
     }
   };
 
   return confirmAction;
+};
+
+export const usePreventLeave = () => {
+  const listener = (event) => {
+    event.preventDefault();
+    event.returnValue = '';
+  };
+
+  const enablePrevent = () => window.addEventListener('beforeunload', listener);
+  const disablePrevent = () => window.removeEventListener('beforeunload', listener);
+
+  return { enablePrevent, disablePrevent };
 };
